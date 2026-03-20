@@ -113,7 +113,7 @@ export function DaoView({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <div className="lg:col-span-5">
-        <div className="border border-white/10 bg-[#020202] p-8 relative overflow-hidden">
+        <div className="border border-white/10 bg-[#020202] p-8 relative overflow-hidden" id="tour-dao-form">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-white/0 via-white/20 to-white/0 opacity-50" />
           
           <div className="mb-8">
@@ -137,16 +137,17 @@ export function DaoView({
             </div>
             
             <div className="space-y-3">
-              <Label htmlFor="amount" className="font-mono text-xs text-white/60 tracking-widest uppercase">Amount (USDCx)</Label>
+              <Label htmlFor="amount" className="font-mono text-xs text-white/60 tracking-widest uppercase">Amount (Testnet STX)</Label>
               <Input 
                 id="amount" 
                 type="number" 
-                placeholder="50000" 
+                placeholder="10" 
                 value={amountUsdcx}
                 onChange={(e) => setAmountUsdcx(e.target.value)}
                 required
                 className="bg-[#050505] border-white/10 rounded-none font-mono text-sm text-white h-12 focus-visible:ring-white/20 focus-visible:border-white/30"
               />
+              <p className="font-mono text-[10px] text-white/40 uppercase tracking-wider">Note: Uses STX on testnet to simulate stablecoin</p>
             </div>
 
             <div className="space-y-3">
@@ -183,7 +184,7 @@ export function DaoView({
         </div>
       </div>
 
-      <div className="lg:col-span-7">
+      <div className="lg:col-span-7" id="tour-dao-list">
         <div className="flex items-center gap-4 mb-8">
           <div className="w-8 h-px bg-white/20" />
           <h3 className="text-xl font-heading font-bold uppercase tracking-widest text-white">My Grants</h3>

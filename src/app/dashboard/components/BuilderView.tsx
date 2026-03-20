@@ -147,7 +147,7 @@ export function BuilderView({
       )}
 
       {!isLoading && builderInvoices.length > 0 && (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="tour-builder-list">
           {builderInvoices.map((inv) => (
             <div key={inv.id} className={`border ${inv.status === 'LOCKED' ? 'border-[#ff4500]/50 bg-[#ff4500]/5' : 'border-white/10 bg-[#020202]'} p-8 relative overflow-hidden group`}>
               {inv.status === 'LOCKED' && (
@@ -191,13 +191,14 @@ export function BuilderView({
                   <Dialog>
                     <DialogTrigger render={
                       <Button 
-                        className="w-full h-12 bg-[#ff4500] text-black hover:bg-white hover:text-black transition-all duration-300 rounded-none font-heading font-bold uppercase tracking-widest border-none"
+                        disabled={inv.onchainId === null}
+                        className="w-full h-12 bg-[#ff4500] text-black hover:bg-white hover:text-black transition-all duration-300 rounded-none font-heading font-bold uppercase tracking-widest border-none disabled:opacity-50 disabled:hover:bg-[#ff4500]"
                         onClick={() => {
                           setSelectedInvoiceId(inv.id);
                           setSelectedEscrowId(inv.onchainId);
                         }}
                       >
-                        Get Upfront Liquidity
+                        {inv.onchainId === null ? 'PENDING CHAIN SYNC' : 'Get Upfront Liquidity'}
                       </Button>
                     } />
                     <DialogContent className="bg-[#050505] border border-white/10 rounded-none text-white sm:max-w-[500px]">

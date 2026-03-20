@@ -51,20 +51,45 @@ export function DashboardTutorial() {
       content: (
         <div className="text-left">
           <h3 className="text-lg font-heading font-bold text-[#ff4500] mb-2 uppercase">Switch Your Role</h3>
-          <p className="font-sans text-sm text-white/80 leading-relaxed">
-            InvoiceVault is a two-sided marketplace. Click here anytime to instantly toggle between acting as a <strong>DAO (Payer)</strong> and a <strong>Builder (Payee)</strong>!
+          <p className="font-sans text-sm text-white/80 leading-relaxed mb-2">
+            InvoiceVault is a two-sided marketplace. You can instantly toggle between acting as a <strong>DAO (Payer)</strong> and a <strong>Builder (Payee)</strong>.
           </p>
+          <p className="font-mono text-xs text-[#ff4500] bg-[#ff4500]/10 p-2 border border-[#ff4500]/20">Try clicking this button later to see the other perspective!</p>
         </div>
       ),
       placement: 'bottom-end',
     },
     {
-      target: '#tour-dashboard-content',
+      target: '#tour-dao-form',
       content: (
         <div className="text-left">
-          <h3 className="text-lg font-heading font-bold text-[#ff4500] mb-2 uppercase">The Control Panel</h3>
+          <h3 className="text-lg font-heading font-bold text-[#ff4500] mb-2 uppercase">Locking Funds</h3>
           <p className="font-sans text-sm text-white/80 leading-relaxed">
-            This is your main dashboard. When you are a <strong>DAO</strong>, you lock funds here. When you are a <strong>Builder</strong>, you come here to tokenize your invoices for upfront cash.
+            When you are acting as a <strong>DAO</strong>, you use this form to create a new grant. You deposit stablecoins (simulated with STX on testnet) into the Clarity smart contract.
+          </p>
+        </div>
+      ),
+      placement: 'right',
+    },
+    {
+      target: '#tour-dao-list',
+      content: (
+        <div className="text-left">
+          <h3 className="text-lg font-heading font-bold text-[#ff4500] mb-2 uppercase">Track Escrows</h3>
+          <p className="font-sans text-sm text-white/80 leading-relaxed">
+            Once locked, your grants appear here. The funds remain perfectly safe in the smart contract until the Builder finishes the work.
+          </p>
+        </div>
+      ),
+      placement: 'left',
+    },
+    {
+      target: '#tour-builder-list',
+      content: (
+        <div className="text-left">
+          <h3 className="text-lg font-heading font-bold text-[#ff4500] mb-2 uppercase">Tokenizing Invoices</h3>
+          <p className="font-sans text-sm text-white/80 leading-relaxed">
+            If you switch your role to a <strong>Builder</strong>, you will see your pending payouts here. You can click "Get Upfront Liquidity" to sell the invoice at a discount for immediate cash.
           </p>
         </div>
       ),
@@ -87,9 +112,10 @@ export function DashboardTutorial() {
       content: (
         <div className="text-left">
           <h3 className="text-lg font-heading font-bold text-[#ff4500] mb-2 uppercase">Claim Yield</h3>
-          <p className="font-sans text-sm text-white/80 leading-relaxed">
-            Once a GitHub PR is merged, the contract settles automatically. Investors go to their Portfolio to claim their profitable yield!
+          <p className="font-sans text-sm text-white/80 leading-relaxed mb-2">
+            Once a GitHub PR is merged, our automated Oracle settles the contract. Investors go to their Portfolio to claim their profitable yield!
           </p>
+          <p className="font-mono text-xs text-white/40 border-t border-white/10 pt-2 mt-2">End of tour. Start building!</p>
         </div>
       ),
       placement: 'bottom',
