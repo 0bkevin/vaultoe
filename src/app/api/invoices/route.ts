@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
-import { invoices } from '@/db/schema';
+import { invoices, users } from '@/db/schema';
 import { randomUUID } from 'crypto';
 import { eq } from 'drizzle-orm';
 
@@ -13,7 +13,8 @@ export async function POST(request: Request) {
       title, 
       description, 
       amountUsdcx, 
-      githubPrUrl 
+      githubPrUrl,
+      txId
     } = body;
 
     if (!daoPrincipal || !builderPrincipal || !amountUsdcx || !title) {
@@ -22,6 +23,19 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Ensure users exist to satisfy foreign key constraints
+    await db.insert(users).values({
+      principal: daoPrincipal,
+      role: 'DAO',
+      createdAt: new Date(),
+    }).onConflictDoNothing();
+
+    await db.insert(users).values({
+      principal: builderPrincipal,
+      role: 'BUILDER',
+      createdAt: new Date(),
+    }).onConflictDoNothing();
 
     const newInvoice = {
       id: randomUUID(),
@@ -32,6 +46,7 @@ export async function POST(request: Request) {
       amountUsdcx: Number(amountUsdcx),
       status: 'LOCKED',
       githubPrUrl: githubPrUrl || '',
+      txId: txId || null,
       createdAt: new Date(),
     };
 

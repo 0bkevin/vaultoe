@@ -25,6 +25,15 @@ export async function POST(request: Request) {
     const prUrl = payload.pull_request.html_url;
     console.log(`PR Merged detected: ${prUrl}`);
 
+    // Mock x402 verification step (Architecture requirement)
+    // In a real implementation, this would verify an L402 payment receipt
+    // or lightning invoice to process the webhook and prevent spam.
+    const hasValidX402Receipt = true; 
+    if (!hasValidX402Receipt) {
+      return NextResponse.json({ error: 'Payment Required: Missing x402 receipt' }, { status: 402 });
+    }
+    console.log('x402 payment verified (mock)');
+
     const matchingInvoices = await db.select().from(invoices).where(eq(invoices.githubPrUrl, prUrl));
     
     if (matchingInvoices.length === 0) {

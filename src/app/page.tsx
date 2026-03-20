@@ -40,7 +40,10 @@ export default function Home() {
             <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> SYSTEM: ONLINE</span>
             <span>BLOCK: 842,109</span>
           </div>
-          <Link href="/marketplace" className="text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
+          <Link href="/pitch" className="text-sm font-heading font-bold uppercase tracking-widest text-[#ff4500] hover:text-white transition-colors">
+            Pitch Deck
+          </Link>
+          <Link href="/marketplace" className="hidden sm:block text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
             Marketplace
           </Link>
           <LaunchAppButton className="bg-[#ff4500] text-black hover:bg-white hover:text-black transition-all duration-300 rounded-none px-8 h-12 font-heading font-bold uppercase tracking-widest border-none shadow-[0_0_20px_rgba(255,69,0,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]">

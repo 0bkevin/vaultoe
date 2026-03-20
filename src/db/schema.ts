@@ -13,6 +13,7 @@ export const users = sqliteTable('users', {
 export const invoices = sqliteTable('invoices', {
   id: text('id').primaryKey(), // UUID
   onchainId: integer('onchain_id'), // Matches Clarity escrow-id
+  txId: text('tx_id'), // Stacks transaction ID for syncing
   daoPrincipal: text('dao_principal').references(() => users.principal),
   builderPrincipal: text('builder_principal').references(() => users.principal),
   title: text('title').notNull(),

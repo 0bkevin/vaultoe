@@ -3,14 +3,47 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useStacks } from '@/components/providers/StacksProvider';
-import { Hexagon } from 'lucide-react';
+import { Hexagon, Users, Building2, HardHat, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export function Navbar() {
-  const { connect, disconnect, userData } = useStacks();
+  const { connect, disconnect, userData, profile, refreshProfile } = useStacks();
+  const [isSwitching, setIsSwitching] = useState(false);
 
   const truncateAddress = (address: string) => {
     if (!address) return '';
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
+  };
+
+  const handleSwitchRole = async () => {
+    if (!userData || !profile) return;
+    setIsSwitching(true);
+    
+    // Toggle between BUILDER and DAO
+    const newRole = profile.role === 'BUILDER' ? 'DAO' : 'BUILDER';
+    
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          principal: userData.profile.stxAddress.testnet,
+          role: newRole,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Failed to switch role');
+      
+      await refreshProfile();
+      toast.success(`Role switched to ${newRole}`);
+      window.location.reload(); // Quick refresh to update dashboard if on it
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to switch role');
+    } finally {
+      setIsSwitching(false);
+    }
   };
 
   return (
@@ -27,13 +60,22 @@ export function Navbar() {
         </Link>
         
         <div className="hidden md:flex gap-6">
+          <Link href="/pitch" className="text-sm font-heading font-bold uppercase tracking-widest text-[#ff4500] hover:text-white transition-colors flex items-center gap-1">
+            Pitch Deck
+          </Link>
+          <button 
+            onClick={() => window.dispatchEvent(new Event('restart-tutorial'))}
+            className="text-sm font-heading font-bold uppercase tracking-widest text-[#ff4500] hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+          >
+            Tutorial
+          </button>
           <Link href="/dashboard" className="text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
             Dashboard
           </Link>
-          <Link href="/marketplace" className="text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
+          <Link href="/marketplace" id="tour-marketplace" className="text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
             Marketplace
           </Link>
-          <Link href="/portfolio" className="text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
+          <Link href="/portfolio" id="tour-portfolio" className="text-sm font-heading font-bold uppercase tracking-widest text-white/60 hover:text-[#ff4500] transition-colors">
             Portfolio
           </Link>
         </div>
@@ -55,6 +97,23 @@ export function Navbar() {
                 {truncateAddress(userData.profile.stxAddress.testnet)}
               </span>
             </div>
+            {profile && (
+              <Button 
+                variant="outline" 
+                id="tour-role-switcher"
+                onClick={handleSwitchRole}
+                disabled={isSwitching}
+                className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white transition-all rounded-none h-10 px-4 flex items-center gap-2 group"
+                title={`Switch to ${profile.role === 'BUILDER' ? 'DAO' : 'BUILDER'} view`}
+              >
+                {profile.role === 'BUILDER' ? (
+                  <><HardHat className="w-4 h-4 text-[#ff4500]" /> <span className="hidden lg:inline text-xs font-mono">Builder</span></>
+                ) : (
+                  <><Building2 className="w-4 h-4 text-[#ff4500]" /> <span className="hidden lg:inline text-xs font-mono">DAO</span></>
+                )}
+                <RefreshCw className={`w-3 h-3 text-white/40 ml-1 group-hover:text-white transition-colors ${isSwitching ? 'animate-spin' : ''}`} />
+              </Button>
+            )}
             <Button 
               variant="outline" 
               onClick={disconnect}
